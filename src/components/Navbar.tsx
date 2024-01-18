@@ -7,7 +7,7 @@ import SessionComponent from './SessionComponent';
 
 const Navbar = async () => {
     const data = await getServerAuthSession();
-    return (<nav className='sticky top-0 inset-x-0 h-fit border-b z-[10] py-1'>
+    return (<nav className='sticky top-0 inset-x-0 h-fit bg-background border-b z-[10] py-1'>
         <div className='container max-w-full h-full mx-auto flex'>
             <div className='flex items-center w-full gap-8'>
                 <Link href={'/'} className='flex  gap-2 items-center'>
