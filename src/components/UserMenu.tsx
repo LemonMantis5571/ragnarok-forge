@@ -13,7 +13,7 @@ import {
 import { signOut } from 'next-auth/react';
 
 interface UserMenuProps {
-    user: Pick<User, 'name' | 'email' | 'image'>;
+    user: Pick<User, 'name' | 'email' | 'image' | 'role'>;
 }
 
 const UserMenu: FC<UserMenuProps> = ({ user }) => {
@@ -31,12 +31,12 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
                 </div>
             ) : null}
         </DropdownMenuTrigger>
-        <DropdownMenuContent  className='rounded me-2'>
+        <DropdownMenuContent className='rounded me-2'>
             <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='rounded' >{user?.email}</DropdownMenuItem>
-            {/* <DropdownMenuItem><Link href={'/'}>Feed</Link></DropdownMenuItem>
-            <DropdownMenuItem><Link href={'/r/create'}>Create community</Link></DropdownMenuItem> */}
+            {/* <DropdownMenuItem><Link href={'/'}>Feed</Link></DropdownMenuItem> */}
+            <DropdownMenuItem className='capitalize'>{user?.role}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='cursor-pointer rounded' onSelect={(e) => {
                 e.preventDefault();

@@ -12,7 +12,7 @@ interface SessionComponentProps {
 
 const SessionComponent: FC<SessionComponentProps> = ({ data }) => {
     return (<div className='flex justify-center sm:justify-end w-full items-center gap-4'>
-        {data?.user ? null : <Icons.discord className='w-6 h-6' onClick={() => void signIn('discord')} />}
+        {data?.user ? null : <Icons.discord className='w-6 h-6 hover:cursor-pointer' onClick={() => void signIn('discord')} />}
         {data && <span className='font-semibold capitalize text-md'>{data.user?.name}</span>}
         {data?.user ? (<UserMenu user={data?.user}></UserMenu>) : null}
     </div>)
