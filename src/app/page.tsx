@@ -1,49 +1,28 @@
-/* eslint-disable @next/next/no-img-element */
-// import Inventory from "~/components/Inventory";
 
-import Link from "next/link";
+import OptionCard from "~/components/OptionCard";
 
 export default function HomePage() {
   return (
     <main className="flex flex-col gap-12  justify-center items-center">
       <section className="flex flex-col p-6 gap-6 md:p-12 md:gap-12">
         <div className="flex flex-col md:flex-row gap-6 md:gap-12">
-          <div className="flex flex-col items-center gap-4 p-6 bg-card rounded-lg shadow-md dark:bg-gray-800">
-            <h2 className="text-2xl font-bold  dark:text-gray-50">Crafting</h2>
-            <img src="/craft.jpeg" alt="card" className="object-contain h-96 w-96" />
-            <p className="text-gray-500 dark:text-gray-400">Craft powerful items to aid you in your journey.</p>
-            <Link
-              className="mt-auto inline-flex h-10 items-center justify-center rounded-md bg-muted px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-              href="#"
-            >
-              Start Crafting
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-4 p-6 bg-card rounded-lg shadow-md dark:bg-gray-800">
-            <h2 className="text-2xl font-bold  dark:text-gray-50">Inventory</h2>
-            <img src="/inventory.jpeg" alt="card" className="object-contain h-96 w-96" />
-            <p className="text-gray-500 dark:text-gray-400">Manage your items, equipment, and resources.</p>
-            <Link
-              className="mt-auto inline-flex h-10 items-center justify-center rounded-md bg-muted px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-              href="/inventory"
-            >
-              Open Inventory
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-4 p-6 bg-card rounded-lg shadow-md dark:bg-gray-800">
-            <h2 className="text-2xl font-bold  dark:text-gray-50">Gacha Cards</h2>
-            <img src="/gacha.jpeg" alt="card" className="object-contain h-96 w-96" />
-            <p className="text-gray-500 dark:text-gray-400">Collect and trade gacha cards for unique rewards.</p>
-            <Link
-              className="mt-auto inline-flex h-10 items-center justify-center rounded-md bg-muted px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-              href="#"
-            >
-              View Gacha Cards
-            </Link>
-          </div>
+          <OptionCard title="Crafting"
+            description="Craft powerful items to aid you in your journey."
+            imageSrc="/craft.jpeg"
+            linkRef="/crafting"
+            buttonLabel="Start Crafting" />
+          <OptionCard title="Inventory"
+            description="Manage your items, equipment, and resources."
+            imageSrc="/inventory.jpeg"
+            linkRef="/inventory"
+            buttonLabel="Open Inventory" />
+          <OptionCard title="Gacha Cards"
+            description="Collect and trade gacha cards for unique rewards."
+            imageSrc="/gacha.jpeg"
+            linkRef="/gacha"
+            buttonLabel="View Gacha Cards" />
         </div>
       </section>
-
       <footer className="bg-card bg-cover bg-center text-white w-full">
         <div className="mx-auto w-full max-w-2xl px-5 py-10 md:px-10 md:py-12 lg:py-14">
           <div className="flex flex-col items-center justify-center">
