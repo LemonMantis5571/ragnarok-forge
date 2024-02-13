@@ -18,13 +18,14 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     DiscordProvider({
-      profile: (profile: DiscordProfile) => {
-        return {
-          ...profile,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          role: profile.role ?? "user",
-        }
-      },
+      // profile: (profile: DiscordProfile) => {
+      //   console.log(profile);
+      //   return {
+      //     ...profile,
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //     role: profile.role ?? "user",
+      //   }
+      // },
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),

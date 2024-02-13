@@ -19,4 +19,4 @@ export default withAuth(
 
 );
 
-export const config = { matcher: ["/inventory", "/adminInventory"] }
+export const config = { matcher: ["/inventory", "/adminInventory", "/crafting"] }
