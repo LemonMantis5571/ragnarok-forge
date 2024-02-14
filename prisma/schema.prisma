@@ -42,9 +42,6 @@ model Session {
 model User {
     id             String          @id @default(cuid())
     name           String?
-    username       String?         @unique
-    avatar         String?
-    discriminator  String?
     email          String?         @unique
     emailVerified  DateTime?
     image          String?
@@ -56,53 +53,52 @@ model User {
 
 model CraftingOrder {
     id        String   @id @default(cuid())
-    userId    String
     status    Status   @default(PENDING)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     quantity  Int
     details   String?
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    items     Item[]
+    userId    String
+    items     Item[]   @relation("Orders")
 }
 
 model Item {
-    id              String        @id @default(cuid())
-    name            String
-    Image           String
-    description     String
-    quantity        Int           @default(1)
-    createdAt       DateTime      @default(now())
-    updatedAt       DateTime      @updatedAt
-    weight          Float         @default(0)
-    craftingOrder   CraftingOrder @relation(fields: [craftingOrderId], references: [id], onDelete: Cascade)
-    craftingOrderId String
-    itemStats       ItemStats[]
-    slots           Int           @default(0)
-    refineable      Boolean       @default(false)
-    tradeable       Boolean       @default(false)
+    id            Int             @id @default(autoincrement())
+    name          String
+    Image         String
+    description   String
+    quantity      Int             @default(1)
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    weight        Float           @default(0)
+    slots         Int             @default(0)
+    refineable    Boolean         @default(false)
+    tradeable     Boolean         @default(false)
+    craftingOrder CraftingOrder[] @relation("Orders")
+    Stats         ItemStats?      @relation(fields: [statsId], references: [id])
+    statsId       Int?
 }
 
 model ItemStats {
-    id     String @id @default(cuid())
-    str    Int    @default(0)
-    agi    Int    @default(0)
-    vit    Int    @default(0)
-    int    Int    @default(0)
-    dex    Int    @default(0)
-    luk    Int    @default(0)
-    atk    Int    @default(0)
-    matk   Int    @default(0)
-    def    Int    @default(0)
-    mdef   Int    @default(0)
-    hit    Int    @default(0)
-    flee   Int    @default(0)
-    crit   Int    @default(0)
-    aspd   Int    @default(0)
-    hp     Int    @default(0)
-    sp     Int    @default(0)
-    item   Item   @relation(fields: [id], references: [id])
-    itemId String
+    id      Int    @id @default(autoincrement())
+    str     Int    @default(0)
+    agi     Int    @default(0)
+    vit     Int    @default(0)
+    int     Int    @default(0)
+    dex     Int    @default(0)
+    luk     Int    @default(0)
+    atk     Int    @default(0)
+    matk    Int    @default(0)
+    def     Int    @default(0)
+    mdef    Int    @default(0)
+    hit     Int    @default(0)
+    flee    Int    @default(0)
+    crit    Int    @default(0)
+    aspd    Int    @default(0)
+    hp      Int    @default(0)
+    sp      Int    @default(0)
+    Item    Item[]
 }
 
 enum Status {
