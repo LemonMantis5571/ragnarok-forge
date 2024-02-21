@@ -60,45 +60,52 @@ model CraftingOrder {
     details   String?
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
-    items     Item[]   @relation("Orders")
+    item      Item     @relation(fields: [itemsId], references: [id])
+    itemsId   Int
+
+    @@index([userId])
 }
 
 model Item {
-    id            Int             @id @default(autoincrement())
-    name          String
-    Image         String
-    description   String
-    quantity      Int             @default(1)
-    createdAt     DateTime        @default(now())
-    updatedAt     DateTime        @updatedAt
-    weight        Float           @default(0)
-    slots         Int             @default(0)
-    refineable    Boolean         @default(false)
-    tradeable     Boolean         @default(false)
-    craftingOrder CraftingOrder[] @relation("Orders")
-    Stats         ItemStats?      @relation(fields: [statsId], references: [id])
-    statsId       Int?
+    id             Int             @id @default(autoincrement())
+    name           String
+    Image          String
+    description    String
+    quantity       Int             @default(1)
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+    weight         Float           @default(0)
+    slots          Int             @default(0)
+    enchants       String
+    refineable     Boolean         @default(false)
+    tradeable      Boolean         @default(false)
+    craftable      Boolean         @default(false)
+    Stats          ItemStats?      @relation(fields: [statsId], references: [id])
+    statsId        Int?
+    craftingOrders CraftingOrder[]
+
+    @@index([statsId])
 }
 
 model ItemStats {
-    id      Int    @id @default(autoincrement())
-    str     Int    @default(0)
-    agi     Int    @default(0)
-    vit     Int    @default(0)
-    int     Int    @default(0)
-    dex     Int    @default(0)
-    luk     Int    @default(0)
-    atk     Int    @default(0)
-    matk    Int    @default(0)
-    def     Int    @default(0)
-    mdef    Int    @default(0)
-    hit     Int    @default(0)
-    flee    Int    @default(0)
-    crit    Int    @default(0)
-    aspd    Int    @default(0)
-    hp      Int    @default(0)
-    sp      Int    @default(0)
-    Item    Item[]
+    id   Int    @id @default(autoincrement())
+    str  Int    @default(0)
+    agi  Int    @default(0)
+    vit  Int    @default(0)
+    int  Int    @default(0)
+    dex  Int    @default(0)
+    luk  Int    @default(0)
+    atk  Int    @default(0)
+    matk Int    @default(0)
+    def  Int    @default(0)
+    mdef Int    @default(0)
+    hit  Int    @default(0)
+    flee Int    @default(0)
+    crit Int    @default(0)
+    aspd Int    @default(0)
+    hp   Int    @default(0)
+    sp   Int    @default(0)
+    Item Item[]
 }
 
 enum Status {
