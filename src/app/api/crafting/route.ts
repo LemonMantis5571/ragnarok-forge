@@ -1,3 +1,4 @@
+import type { Enchants } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
@@ -6,7 +7,8 @@ type CrafingOrder = {
     item: string;
     quantity: number;
     details: string;
-    enchant: string;
+    enchant: keyof typeof Enchants;
+
 }
 
 export async function POST(
@@ -43,6 +45,7 @@ export async function POST(
             userId: data.user.id,
             quantity,
             details,
+            Enchants: enchant,
             itemsId: orderItem?.id
         }
     });

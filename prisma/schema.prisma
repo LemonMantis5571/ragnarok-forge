@@ -58,11 +58,11 @@ model CraftingOrder {
     updatedAt DateTime @updatedAt
     quantity  Int
     details   String?
+    Enchants  Enchants?
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
     item      Item     @relation(fields: [itemsId], references: [id])
     itemsId   Int
-
     @@index([userId])
 }
 
@@ -76,7 +76,6 @@ model Item {
     updatedAt      DateTime        @updatedAt
     weight         Float           @default(0)
     slots          Int             @default(0)
-    enchants       String
     refineable     Boolean         @default(false)
     tradeable      Boolean         @default(false)
     craftable      Boolean         @default(false)
@@ -106,6 +105,25 @@ model ItemStats {
     hp   Int    @default(0)
     sp   Int    @default(0)
     Item Item[]
+}
+
+enum Enchants {
+    STR
+    AGI
+    VIT
+    INT
+    DEX
+    LUK
+    ATK
+    MATK
+    DEF
+    MDEF
+    HIT
+    FLEE
+    CRIT
+    ASPD
+    HP
+    SP
 }
 
 enum Status {

@@ -29,7 +29,7 @@ export default async function HomePage() {
             <OptionCard title="Blacksmithing"
               description="Craft orders from players!"
               imageSrc="/blacksmithing.jpeg"
-              linkRef="/adminInventory"
+              linkRef="/blacksmithing"
               buttonLabel="See Orders" />
           )}
         </div>

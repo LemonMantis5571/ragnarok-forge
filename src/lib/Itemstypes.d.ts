@@ -51,3 +51,12 @@ export interface IcraftingOrder {
         item: Item | null
     } & CraftingOrder)[] | null;
 }
+
+export interface BlacksmithingTableOrders {
+    Orders: ({
+        user: {
+            name: string | null;
+        }
+        item: Item | null
+    } & CraftingOrder)[] | null;
+}

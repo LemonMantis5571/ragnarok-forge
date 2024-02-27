@@ -1,5 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 const Footer = () => {
-    return (<footer className="bg-card bg-cover bg-center text-white w-full">
+    return (
+    <footer className="bg-card bg-cover bg-center text-white w-full">
         <div className="mx-auto w-full max-w-2xl px-5 py-10 md:px-10 md:py-12 lg:py-14">
             <div className="flex flex-col items-center justify-center">
                 <a href="#" className="mb-4 max-w-full flex flex-col items-center">

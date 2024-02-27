@@ -36,6 +36,25 @@ const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
         resolver: zodResolver(orderSchema)
     });
 
+    const Enchants = {
+        STR: "STR",
+        AGI: "AGI",
+        VIT: "VIT",
+        INT: "INT",
+        DEX: "DEX",
+        LUK: "LUK",
+        ATK: "ATK",
+        MATK: "MATK",
+        DEF: "DEF",
+        MDEF: "MDEF",
+        HIT: "HIT",
+        FLEE: "FLEE",
+        CRIT: "CRIT",
+        ASPD: "ASPD",
+        HP: "HP",
+        SP: "SP",
+    }
+
     const onSubmit: SubmitHandler<OrderRequest> = async (data) => {
         try {
             await axios.post<OrderRequest>('/api/crafting', data);
@@ -110,12 +129,17 @@ const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
                                             </FormControl>
                                             <SelectContent className="space-y-2 rounded">
                                                 <SelectGroup className="rounded">
-                                                    <SelectItem value="HP">HP+3</SelectItem>
-                                                    <SelectItem value="ATK">ATK+3</SelectItem>
-                                                    <SelectItem value="AGI">AGI+3</SelectItem>
-                                                    <SelectItem value="VIT">VIT+3</SelectItem>
-                                                    <SelectItem value="INT">INT+3</SelectItem>
-                                                    <SelectItem value="DEX">DEX+3</SelectItem>
+                                                    {Object.keys(Enchants).map((enchant, index) => {
+                                                        return (
+                                                            <SelectItem
+                                                                key={index}
+                                                                value={enchant}
+                                                                className="font-semibold"
+                                                            >
+                                                                {enchant}
+                                                            </SelectItem>
+                                                        );
+                                                    })}
                                                 </SelectGroup>
                                             </SelectContent>
                                         </Select>
@@ -132,7 +156,7 @@ const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
                                     <FormMessage />
                                 </FormItem>
                             )} />
-                            <Button className="rounded font-semibold text-neutral-100" type="submit">Submit Order</Button>
+                            <Button className="rounded font-semibold text-neutral-100" disabled={form.formState.isSubmitting} type="submit">Submit Order</Button>
                         </form>
                     </Form>
                 </div>

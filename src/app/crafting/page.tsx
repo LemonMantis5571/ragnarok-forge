@@ -10,7 +10,7 @@ const page = async () => {
     }
 
     return (
-        <Crafting Item={items}  Orders={orders}/>
+        <Crafting Item={items} Orders={orders} />
     )
 }
 
