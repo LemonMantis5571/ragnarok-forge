@@ -5,12 +5,12 @@
 [x] Fix Enchant Process
 [x] Crafting view for admin
 [X] Filter Orders
-[~] 
-[~] Crafting Chance 
+[X] View for Blacksmiths
+[*] Crafting animation
+[*] Business logic for blacksmiths
 [] Crafting history (User)
 [] Item's receipt and take items
 [] Avaialable and Unavailable items for craft
-[] Enchantment & Crafting animation
 
 // Gacha
 

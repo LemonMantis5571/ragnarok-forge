@@ -3,8 +3,9 @@
 import { useState, type FC } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import type { BlacksmithingTableOrders } from '~/lib/Itemstypes'
-import { Button } from '../ui/button'
 import { Icons } from '../Icons'
+import CraftModal from './CraftModal'
+
 
 const BlacksmithingTable: FC<BlacksmithingTableOrders> = ({ Orders }) => {
     const [selectedFilter, setSelectedFilter] = useState<string>('PENDING')
@@ -72,9 +73,7 @@ const BlacksmithingTable: FC<BlacksmithingTableOrders> = ({ Orders }) => {
                                 <TableCell>{order.details}</TableCell>
                                 <TableCell className='capitalize'>{order.user.name}</TableCell>
                                 <TableCell>
-                                    <Button variant={'outline'} className='rounded text-neutral-100 text-sm'>
-                                        CRAFTING OPTIONS
-                                    </Button>
+                                    <CraftModal player={order.user.name} id={order.id} name={order.item?.name} detaiils={order.details} />
                                 </TableCell>
                             </TableRow>
                         )
