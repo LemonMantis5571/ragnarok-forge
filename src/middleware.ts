@@ -10,6 +10,13 @@ export default withAuth(
                 new URL("/denied", request.url)
             )
         }
+
+        if (request.nextUrl.pathname.startsWith("/blacksmithing")
+            && request.nextauth.token?.role !== "admin") {
+            return NextResponse.rewrite(
+                new URL("/denied", request.url)
+            )
+        }
     },
     {
         callbacks: {

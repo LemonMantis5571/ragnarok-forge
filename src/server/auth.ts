@@ -39,11 +39,33 @@ export const authOptions: NextAuthOptions = {
 
       return session;
     },
-    jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
       }
+
+      // Update Avatar everytime it changes, I really don't know why nextauth doesn't handle it automatically
+
+      const checkUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
+      if (checkUser && profile) {
+        const imageUrl = (profile as unknown as { image_url: string }).image_url;
+
+        await db.user.update({
+          where: {
+            id: checkUser.id,
+          },
+          data: {
+            image: imageUrl
+          }
+        })
+      }
+
       return token;
 
     },

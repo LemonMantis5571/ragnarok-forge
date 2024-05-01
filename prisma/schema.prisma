@@ -44,6 +44,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   craftingOrders CraftingOrder[]
+  inventories    Inventory[]
 }
 
 model CraftingOrder {
@@ -78,6 +79,7 @@ model Item {
   statsId        Int?
   Stats          ItemStats?      @relation(fields: [statsId], references: [id])
   craftingOrders CraftingOrder[]
+  inventories    Inventory[]
 
   @@index([statsId])
 }
@@ -111,6 +113,16 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Inventory {
+  id        String   @id @default(cuid())
+  userId    String
+  itemsId   Int
+  quantity  Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item      Item     @relation(fields: [itemsId], references: [id])
+  @@index([userId])
+}
+
 enum Enchants {
   STR
   AGI
@@ -129,6 +141,8 @@ enum Enchants {
   HP
   SP
 }
+
+
 
 enum Status {
   PENDING
