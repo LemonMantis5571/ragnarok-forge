@@ -18,13 +18,14 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     DiscordProvider({
-      profile: (profile: DiscordProfile) => {
-        return {
-          ...profile,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          role: profile.role ?? "user",
-        }
-      },
+      // profile: (profile: DiscordProfile) => {
+      //   console.log(profile);
+      //   return {
+      //     ...profile,
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //     role: profile.role ?? "user",
+      //   }
+      // },
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
@@ -38,11 +39,33 @@ export const authOptions: NextAuthOptions = {
 
       return session;
     },
-    jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
       }
+
+      // Update Avatar everytime it changes, I really don't know why nextauth doesn't handle it automatically
+
+      const checkUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
+      if (checkUser && profile) {
+        const imageUrl = (profile as unknown as { image_url: string }).image_url;
+
+        await db.user.update({
+          where: {
+            id: checkUser.id,
+          },
+          data: {
+            image: imageUrl
+          }
+        })
+      }
+
       return token;
 
     },

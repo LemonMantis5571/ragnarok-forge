@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-
+'use client';
+import { type FC, useState } from "react"
 import MiniInventory from "./MiniInventory"
 import { Button } from "./ui/button"
 import { Label } from "./ui/label"
-
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
     Select,
     SelectContent,
@@ -13,57 +14,151 @@ import {
     SelectValue,
 } from "./ui/select"
 import { Textarea } from "./ui/textarea"
+import { type IcraftingOrder } from "~/lib/Itemstypes"
+import CraftableItemsInfo from "./CraftableItemsInfo";
+import { orderSchema, type OrderRequest } from "~/lib/db.validators";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
+const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
+    const [selectedItem, setSelectedItem] = useState<string>('');
+    const router = useRouter();
 
-const Crafting = () => {
+    const form = useForm<OrderRequest>({
+        defaultValues: {
+            item: '',
+            enchant: '',
+            details: '',
+            quantity: 1,
+        },
+        resolver: zodResolver(orderSchema)
+    });
+
+    const Enchants = {
+        STR: "STR",
+        AGI: "AGI",
+        VIT: "VIT",
+        INT: "INT",
+        DEX: "DEX",
+        LUK: "LUK",
+        ATK: "ATK",
+        MATK: "MATK",
+        DEF: "DEF",
+        MDEF: "MDEF",
+        HIT: "HIT",
+        FLEE: "FLEE",
+        CRIT: "CRIT",
+        ASPD: "ASPD",
+        HP: "HP",
+        SP: "SP",
+    }
+
+    const onSubmit: SubmitHandler<OrderRequest> = async (data) => {
+        try {
+            await axios.post<OrderRequest>('/api/crafting', data);
+
+        } catch (error) {
+            console.log(error);
+        }
+        form.reset();
+        router.refresh();
+        setSelectedItem('');
+    }
+
+    const selected = Item?.find((item) => item.id === parseInt(selectedItem));
     return (
         <div className="container mx-auto">
             <div className="grid gap-8 md:grid-cols-2 py-6 px-4">
                 <div className="bg-card rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-bold mb-4">Crafting Order</h2>
-                    <form className="flex flex-col space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="item">Craftable Items</Label>
-                            <Select name="item">
-                                <SelectTrigger className="w-full rounded">
-                                    <SelectValue placeholder="Select an item" />
-                                </SelectTrigger>
-                                <SelectContent className="space-y-2 rounded">
-                                    <SelectGroup className="rounded">
-                                        <SelectItem value="Vshield" className="font-semibold">
-                                            <img src="https://rune-nifelheim.com/db/items/img/2115.gif" alt="Valkyrja&apos;s Shield" className="inline-block h-4 w-4 me-2" />
-                                            Valkyrja&apos;s Shield</SelectItem>
-                                        <SelectItem value="Varmor">
-                                            <img src="https://rune-nifelheim.com/db/items/img/2357.gif" alt="Valkyrja&apos;s Armor" className="inline-block h-4 w-4 me-2" />
-                                            Valkyrian Armor</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="Enchants">Enchants</Label>
-                            <Select name="Enchants">
-                                <SelectTrigger className="w-full rounded">
-                                    <SelectValue placeholder="Select an item" />
-                                </SelectTrigger>
-                                <SelectContent className="space-y-2 rounded">
-                                    <SelectGroup className="rounded">
-                                        <SelectItem value="HP">HP+3</SelectItem>
-                                        <SelectItem value="ATK">ATK+3</SelectItem>
-                                        <SelectItem value="AGI">AGI+3</SelectItem>
-                                        <SelectItem value="VIT">VIT+3</SelectItem>
-                                        <SelectItem value="INT">INT+3</SelectItem>
-                                        <SelectItem value="DEX">DEX+3</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-4">
-                            <Label htmlFor="Details">Additional Details</Label>
-                            <Textarea name="Details" className="rounded" placeholder="Additional Details" />
-                            <Button className="rounded font-semibold text-neutral-100">Submit Order</Button>
-                        </div>
-                    </form>
+                    <Form {...form}>
+                        <form className="flex flex-col space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+                            <FormField name='item' control={form.control} render={({ field }) => (
+                                <FormItem>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="item">Craftable Items</Label>
+                                        <Select onValueChange={(value) => {
+                                            setSelectedItem(value);
+                                            field.onChange(value);
+                                        }} value={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="w-full rounded">
+                                                    <SelectValue placeholder="Select an item" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className="space-y-2 rounded">
+                                                <SelectGroup className="rounded">
+                                                    {Item?.map((item) => {
+                                                        return (
+                                                            <SelectItem
+                                                                key={item.id}
+                                                                value={item.id.toString()}
+                                                                className="font-semibold"
+                                                            >
+                                                                <img src={item.Image} alt="Valkyrja&apos;s Shield" className="inline-block h-4 w-4 me-2" />
+                                                                {item.name}
+                                                            </SelectItem>
+                                                        );
+                                                    })}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                            {selected &&
+                                (<CraftableItemsInfo
+                                    name={selected?.name}
+                                    description={selected?.description}
+                                    stats={selected?.Stats}
+                                    Weight={selected?.weight}
+                                    itemClass="Shield" />)
+                            }
+                            <FormField name='enchant' control={form.control} render={({ field }) => (
+                                <FormItem >
+                                    <div className="space-y-2">
+                                        <Label htmlFor="Enchants">Enchants</Label>
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="w-full rounded">
+                                                    <SelectValue placeholder="Select an Enchant" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className="space-y-2 rounded">
+                                                <SelectGroup className="rounded">
+                                                    {Object.keys(Enchants).map((enchant, index) => {
+                                                        return (
+                                                            <SelectItem
+                                                                key={index}
+                                                                value={enchant}
+                                                                className="font-semibold"
+                                                            >
+                                                                {enchant}
+                                                            </SelectItem>
+                                                        );
+                                                    })}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                            <FormField name='details' control={form.control} render={({ field }) => (
+                                <FormItem>
+                                    <div className="space-y-4">
+                                        <Label htmlFor="Details">Additional Details</Label>
+                                        <Textarea className="rounded" placeholder="Additional Details" {...field} />
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                            <Button className="rounded font-semibold text-neutral-100" disabled={form.formState.isSubmitting} type="submit">Submit Order</Button>
+                        </form>
+                    </Form>
                 </div>
                 <div className="bg-card rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-extrabold mb-4">Inventory</h2>
@@ -83,7 +178,7 @@ const Crafting = () => {
                     </div>
                 </div>
             </div>
-            <MiniInventory />
+            <MiniInventory Orders={Orders} />
         </div>
 
     )

@@ -4,7 +4,8 @@ import { NextResponse } from "next/server";
 export default withAuth(
     function middleware(request: NextRequestWithAuth) {
 
-        if (request.nextUrl.pathname.startsWith("/adminInventory")
+    
+        if (request.nextUrl.pathname.startsWith("/blacksmithing")
             && request.nextauth.token?.role !== "admin") {
             return NextResponse.rewrite(
                 new URL("/denied", request.url)
@@ -19,4 +20,4 @@ export default withAuth(
 
 );
 
-export const config = { matcher: ["/inventory", "/adminInventory"] }
+export const config = { matcher: ["/inventory", "/blacksmithing", "/crafting"] }
