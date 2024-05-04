@@ -12,11 +12,10 @@ const MiniInventory: FC<CurrentOrders> = ({
 }) => {
 
     const sortedOrders = Orders?.sort((a, b) => {
-        // Assuming createdAt is a timestamp
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
-    // Take the first three orders
+
     const recentOrders = sortedOrders?.slice(0, 3);
 
     return (
