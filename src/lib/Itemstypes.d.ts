@@ -60,3 +60,10 @@ export interface BlacksmithingTableOrders {
         item: Item | null
     } & CraftingOrder)[] | null;
 }
+
+export interface DiscordTokenResponse {
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    // Add any other properties returned in the response as needed
+  }

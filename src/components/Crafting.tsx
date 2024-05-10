@@ -73,9 +73,9 @@ const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
             <div className="grid gap-8 md:grid-cols-2 py-6 px-4">
                 <div className="bg-card rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-bold mb-4">Crafting Order</h2>
-                    <Form {...form}>
+                    <Form {...form} >
                         <form className="flex flex-col space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-                            <FormField name='item' control={form.control} render={({ field }) => (
+                            <FormField  name='item' control={form.control} render={({ field }) => (
                                 <FormItem>
                                     <div className="space-y-2">
                                         <Label htmlFor="item">Craftable Items</Label>
@@ -97,7 +97,7 @@ const Crafting: FC<IcraftingOrder> = ({ Item, Orders }) => {
                                                                 value={item.id.toString()}
                                                                 className="font-semibold"
                                                             >
-                                                                <img src={item.Image} alt="Valkyrja&apos;s Shield" className="inline-block h-4 w-4 me-2" />
+                                                                <img src={item.Image} alt={item.name} className="inline-block h-4 w-4 me-2" />
                                                                 {item.name}
                                                             </SelectItem>
                                                         );
